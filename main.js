@@ -41,20 +41,20 @@ function load(data, map, coords) {
         .style("color", "white")
         .text("Zoom")
     slider.append("input")
-            .attr("class", "form-control-range")
-            .attr("type", "range")
-            .attr("min", 0.5)
-            .attr("max", 4)
-            .attr("step", 0.1)
-            .attr("value", 1)
-            .on("input", function() {
-                projection.scale(500 * this.value)
-                scale = this.value
-                update()
-            })
+        .attr("class", "form-control-range")
+        .attr("type", "range")
+        .attr("min", 0.5)
+        .attr("max", 4)
+        .attr("step", 0.1)
+        .attr("value", 1)
+        .on("input", function() {
+            projection.scale(500 * this.value)
+            scale = this.value
+            update()
+        })
 
     function zoomed() {
-        projection.rotate([99.6 + d3.event.transform.x / (5 * scale), -36.2 - d3.event.transform.y / (5 * scale)])
+        projection.rotate([99.6 + d3.event.transform.x / 5, -36.2 - d3.event.transform.y / 5])
         path.projection(projection)
         update()
     }
