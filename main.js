@@ -25,10 +25,6 @@ function load(data, map, coords) {
         .attr("class", "tooltip shadow card")
         .style("opacity", 0)
     
-    var tooltiptext = tooltip
-        .append("div")
-        .attr("class", "card-body")
-    
     var path = d3.geoPath()
         .projection(projection)
 
@@ -74,14 +70,19 @@ function load(data, map, coords) {
     var topo = topojson.feature(map, map.objects.countries).features
     
     var data_by_city = {}
-    var lat = {}, lon = {}
+    var count = {}
     data.forEach(d => {
         var city = d["Where?"]
         if (city != "" && city.charAt(city.length - 1) != "%") {
             if (!(city in data_by_city)) {
-                data_by_city[city] = []
+                count[city] = 0
+                data_by_city[city] = {}
             }
-            data_by_city[city].push({"name": d["Class Member"], "uni": d["Destination!"]})
+            if (!(d["Destination!"] in data_by_city[city])) {
+                data_by_city[city][d["Destination!"]] = []
+            }
+            count[city] += 1
+            data_by_city[city][d["Destination!"]].push(d["Class Member"])
         }
     })
 
@@ -110,7 +111,7 @@ function load(data, map, coords) {
                 return projection([coords[d[0]].lng, coords[d[0]].lat])[1]
             })
             .attr("r", function (d) {
-                return 5 * Math.sqrt(d[1].length)
+                return 5 * Math.sqrt(count[d[0]])
             })
             .style("opacity", 0.8)
             .style("fill", "red")
@@ -119,17 +120,23 @@ function load(data, map, coords) {
                 d3.select(this)
                     .style("fill", "black")
 
-                var res = ""
-                d[1].forEach(function (e) {
-                    var f = e.name.split(", ")
-                    res += "<tr><td><p>" + f[1] + " " + f[0] + "</p></td><td><p><em>" + e.uni + "</p></td></td>"
-                })
+                var res = "<ul class=\"list-group list-group-flush\">"
+                res += "<li class=\"list-group-item\"><h5 class=\"mb-0\">" + d[0] + "</li>"
+                for (const uni in d[1]) {
+                    res += "<li class=\"list-group-item\"><strong>" + uni + " <small class=\"text-muted\">(" + d[1][uni].length + ")</small></strong><ul>"
+                    for (const person in d[1][uni]) {
+                        var n = d[1][uni][person].split(", ")
+                        res += "<li>" + n[1] + " " + n[0] + "</li>"
+                    }
+                    res += "</ul></li>"
+                }
+                res += "</ul>"
 
                 tooltip.transition()
                     .duration(250)
                     .style("opacity", 1)
-                tooltiptext.html(
-                    "<h5 class=\"card-title\">" + d[0] + "</h5><table class=\"card-text table table-sm table-striped\">" + res + "</table></p>")
+                tooltip.html(
+                    res)
                     .style("left", (d3.event.pageX + 15) + "px")
                     .style("top", (d3.event.pageY - 28) + "px")
             })
