@@ -138,12 +138,12 @@ function load(data, map, coords) {
                 tooltip.html(
                     res)
                     .style("left", (d3.event.pageX + 15) + "px")
-                    .style("top", (d3.event.pageY - 28) + "px")
+                    .style("top", (d3.event.pageY - 128) + "px")
             })
             .on("mousemove", function (d) {
                 tooltip
                     .style("left", (d3.event.pageX + 15) + "px")
-                    .style("top", (d3.event.pageY - 28) + "px")
+                    .style("top", (d3.event.pageY - 128) + "px")
             })
             .on("mouseout", function (d) {
                 d3.select(this)
