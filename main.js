@@ -22,8 +22,9 @@ function load(data, map, coords) {
         .rotate([99.6, -36.2])
 
     var tooltip = d3.select("body").append("div")
-        .attr("class", "tooltip shadow card")
+        .attr("class", "card title shadow text-white bg-dark")
         .style("opacity", 0)
+        .style("width", "350px")
     
     var path = d3.geoPath()
         .projection(projection)
@@ -120,10 +121,10 @@ function load(data, map, coords) {
                 d3.select(this)
                     .style("fill", "black")
 
-                var res = "<ul class=\"list-group list-group-flush\">"
-                res += "<li class=\"list-group-item\"><h5 class=\"mb-0\">" + d[0] + "</li>"
+                var res = "<ul class=\"list-group list-group-flush bg-dark\">"
+                res += "<li class=\"list-group-item text-white bg-dark\"><h5 class=\"mb-0 text-white\">" + d[0] + "</h5></li>"
                 for (const uni in d[1]) {
-                    res += "<li class=\"list-group-item\"><strong>" + uni + " <small class=\"text-muted\">(" + d[1][uni].length + ")</small></strong><ul>"
+                    res += "<li class=\"list-group-item text-white bg-dark\"><strong>" + uni + "</strong> <small>(" + d[1][uni].length + ")</small><ul>"
                     for (const person in d[1][uni]) {
                         var n = d[1][uni][person].split(", ")
                         res += "<li>" + n[1] + " " + n[0] + "</li>"
@@ -133,29 +134,20 @@ function load(data, map, coords) {
                 res += "</ul>"
 
                 tooltip.transition()
-                    .duration(250)
+                    .duration(100)
                     .style("opacity", 1)
                 tooltip.html(
                     res)
-                    .style("left", (d3.event.pageX + 15) + "px")
-                    .style("top", (d3.event.pageY - 128) + "px")
-            })
-            .on("mousemove", function (d) {
-                tooltip
-                    .style("left", (d3.event.pageX + 15) + "px")
-                    .style("top", (d3.event.pageY - 128) + "px")
+                    .style("right", 20 + "px")
+                    .style("top", 20 + "px")
             })
             .on("mouseout", function (d) {
                 d3.select(this)
                     .style("fill", "red")
 
                 tooltip.transition()
-                    .duration(250)
+                    .duration(1000)
                     .style("opacity", 0)
-                
-                tooltip
-                    .style("left", -1000 + "px")
-                    .style("top", -1000 + "px")
             })
 
     var graticule = d3.geoGraticule10();
