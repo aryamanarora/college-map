@@ -120,19 +120,8 @@
     "lat": "34.14356"
   },
   "Coventry, England": {
-    "adminCode2": "019",
-    "adminCode3": "",
-    "adminCode1": "VT",
-    "lng": "-72.27145",
-    "houseNumber": "",
-    "locality": "Coventry",
-    "adminCode4": "",
-    "adminName2": "Orleans",
-    "street": "Back Coventry Rd",
-    "postalcode": "",
-    "countryCode": "US",
-    "adminName1": "Vermont",
-    "lat": "44.86191"
+    "lat": "52.4068",
+    "lng": "-1.5197"
   },
   "New York, NY": {
     "adminCode2": "061",
@@ -713,19 +702,8 @@
     "lat": "36.19353"
   },
   "Montreal, Canada": {
-    "adminCode2": "051",
-    "adminCode3": "",
-    "adminCode1": "WI",
-    "lng": "-90.23758",
-    "houseNumber": "",
-    "locality": "Montreal",
-    "adminCode4": "",
-    "adminName2": "Iron",
-    "street": "Montreal St",
-    "postalcode": "54550",
-    "countryCode": "US",
-    "adminName1": "Wisconsin",
-    "lat": "46.43091"
+    "lat": 45.5017,
+    "lng": -73.5673
   },
   "Memphis, TN": {
     "adminCode2": "157",
@@ -846,5 +824,20 @@
     "countryCode": "US",
     "adminName1": "New Jersey",
     "lat": "40.75414"
+  },
+  "Tallahassee, FL": {
+    "adminCode2": "073",
+    "adminCode3": "",
+    "adminCode1": "FL",
+    "lng": "-84.24331",
+    "houseNumber": "",
+    "locality": "Tallahassee",
+    "adminCode4": "",
+    "adminName2": "Leon",
+    "street": "Tallahassee Dr",
+    "postalcode": "",
+    "countryCode": "US",
+    "adminName1": "Florida",
+    "lat": "30.51373"
   }
 }

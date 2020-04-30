@@ -14,20 +14,28 @@ function load(data, map, coords) {
         .attr("width", width)
         .attr("height", height)
     var g = svg.append("g")
+
     
     var projection = d3.geoOrthographic()
-        .scale(500)
+        .scale(500 * (height / 821))
         .translate([width / 2, height / 2])
+        .rotate([99.6, -36.2])
 
     var tooltip = d3.select("body").append("div")
-        .attr("class", "tooltip")
+        .attr("class", "tooltip shadow card")
         .style("opacity", 0)
+    
+    var tooltiptext = tooltip
+        .append("div")
+        .attr("class", "card-body")
     
     var path = d3.geoPath()
         .projection(projection)
 
+    var scale = 1
+    var old = [0, 0], tot = [0, 0]
     function zoomed() {
-        projection.rotate([d3.event.transform.x / 5, -d3.event.transform.y / 5])
+        projection.rotate([99.6 + d3.event.transform.x / 5, -36.2 - d3.event.transform.y / 5])
         path.projection(projection)
         update()
     }
@@ -50,7 +58,7 @@ function load(data, map, coords) {
     var lat = {}, lon = {}
     data.forEach(d => {
         var city = d["Where?"]
-        if (city != "") {
+        if (city != "" && city.charAt(city.length - 1) != "%") {
             if (!(city in data_by_city)) {
                 data_by_city[city] = []
             }
@@ -59,21 +67,79 @@ function load(data, map, coords) {
     })
 
     data_by_city = Object.entries(data_by_city)
+    function getVisibility(d) {
+        const visible = path(
+            {type: 'Point', coordinates: [coords[d[0]].lng, coords[d[0]].lat]});
+        
+        return visible ? 'visible' : 'hidden';
+    }
 
+    var g2 = svg.append("g")
+        
+    g2.selectAll("circle")
+        .data(data_by_city)
+        .enter()
+        .append("circle")
+            .attr("id", function(d) {
+                return d[0]
+            })
+            .attr("cx", function(d) {
+                console.log(d)
+                return projection([coords[d[0]].lng, coords[d[0]].lat])[0]
+            })
+            .attr("cy", function(d) {
+                return projection([coords[d[0]].lng, coords[d[0]].lat])[1]
+            })
+            .attr("r", function (d) {
+                return 5 * Math.sqrt(d[1].length)
+            })
+            .style("opacity", 0.8)
+            .style("fill", "red")
+            .attr('visibility', getVisibility)
+            .on("mouseover", function(d) {
+                d3.select(this)
+                    .style("fill", "black")
+
+                var res = ""
+                d[1].forEach(function (e) {
+                    var f = e.name.split(", ")
+                    res += "<tr><td><p>" + f[1] + " " + f[0] + "</p></td><td><p><em>" + e.uni + "</p></td></td>"
+                })
+
+                tooltip.transition()
+                    .duration(250)
+                    .style("opacity", 1)
+                tooltiptext.html(
+                    "<h5 class=\"card-title\">" + d[0] + "</h5><table class=\"card-text table table-sm table-striped\">" + res + "</table></p>")
+                    .style("left", (d3.event.pageX + 15) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px")
+            })
+            .on("mousemove", function (d) {
+                tooltip
+                    .style("left", (d3.event.pageX + 15) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px")
+            })
+            .on("mouseout", function (d) {
+                d3.select(this)
+                    .style("fill", "red")
+
+                tooltip.transition()
+                    .duration(250)
+                    .style("opacity", 0)
+                
+                tooltip
+                    .style("left", -1000 + "px")
+                    .style("top", -1000 + "px")
+            })
+
+    var graticule = d3.geoGraticule10();
+    
     update()
 
     function update() {
-        function getVisibility(d) {
-            const visible = path(
-                {type: 'Point', coordinates: [coords[d[0]].lng, coords[d[0]].lat]});
-            
-            return visible ? 'visible' : 'hidden';
-        }
 
         // console.log(world)
         g.selectAll("*").remove()
-
-        var graticule = d3.geoGraticule10();
         var gg = g.append("path")
             .attr("class", "grid")
             .datum(graticule)
@@ -92,56 +158,18 @@ function load(data, map, coords) {
                 .attr("d", path)
                 .attr("stroke-width", "0px")
                 .attr("stroke", "red")
-                .attr("fill", "grey")
+                .attr("fill", "#ccc")
 
-        g.selectAll("circle")
-            .data(data_by_city)
-            .enter()
-            .append("circle")
-                .attr("cx", function(d) {
-                    console.log(d)
-                    return projection([coords[d[0]].lng, coords[d[0]].lat])[0]
-                })
-                .attr("cy", function(d) {
-                    return projection([coords[d[0]].lng, coords[d[0]].lat])[1]
-                })
-                .attr("r", function (d) {
-                    return 5 * Math.sqrt(d[1].length)
-                })
-                .style("opacity", 0.8)
-                .style("fill", "red")
-                .attr('visibility', getVisibility)
-                .on("mouseover", function(d) {
-                    d3.select(this)
-                        .style("fill", "black")
-
-                    var res = ""
-                    d[1].forEach(function (e) {
-                        var f = e.name.split(", ")
-                        res += "<tr><td><p>" + f[1] + " " + f[0] + "</p></td><td><p><em>" + e.uni + "</p></td></td>"
-                    })
-    
-                    tooltip.transition()
-                        .duration(250)
-                        .style("opacity", 1)
-                    tooltip.html(
-                        "<p><strong>" + d[0] + "</strong><table class=\"table table-sm table-striped\">" + res + "</table></p>")
-                        .style("left", (d3.event.pageX + 15) + "px")
-                        .style("top", (d3.event.pageY - 28) + "px")
-                })
-                .on("mousemove", function (d) {
-                    tooltip
-                        .style("left", (d3.event.pageX + 15) + "px")
-                        .style("top", (d3.event.pageY - 28) + "px")
-                })
-                .on("mouseout", function (d) {
-                    d3.select(this)
-                        .style("fill", "red")
-    
-                    tooltip.transition()
-                        .duration(250)
-                        .style("opacity", 0)
-                })
+        g2.selectAll("circle")
+            .attr("cx", function(d) {
+                var id = d3.select(this).attr("id")
+                return projection([coords[id].lng, coords[id].lat])[0]
+            })
+            .attr("cy", function(d) {
+                var id = d3.select(this).attr("id")
+                return projection([coords[id].lng, coords[id].lat])[1]
+            })
+            .attr('visibility', getVisibility)
     }
 
 }
