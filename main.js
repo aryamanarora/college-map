@@ -43,7 +43,6 @@ function load(data, map, coords) {
         .scaleExtent([1, 12])
         .on("zoom", zoomed)
     svg.call(zoom)
-    svg.on("click", unzoomed)
 
     var topo = topojson.feature(map, map.objects.countries).features
     
