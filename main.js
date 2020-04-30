@@ -17,7 +17,7 @@ function load(data, map, coords) {
 
     
     var projection = d3.geoOrthographic()
-        .scale(500 * (height / 821))
+        .scale(500)
         .translate([width / 2, height / 2])
         .rotate([99.6, -36.2])
 
@@ -33,9 +33,28 @@ function load(data, map, coords) {
         .projection(projection)
 
     var scale = 1
-    var old = [0, 0], tot = [0, 0]
+    var slider = d3.select("#zoom-slider")
+        .append("div")
+            .attr("class", "card-body")
+
+    slider.append("p")
+        .style("color", "white")
+        .text("Zoom")
+    slider.append("input")
+            .attr("class", "form-control-range")
+            .attr("type", "range")
+            .attr("min", 0.5)
+            .attr("max", 4)
+            .attr("step", 0.1)
+            .attr("value", 1)
+            .on("input", function() {
+                projection.scale(500 * this.value)
+                scale = this.value
+                update()
+            })
+
     function zoomed() {
-        projection.rotate([99.6 + d3.event.transform.x / 5, -36.2 - d3.event.transform.y / 5])
+        projection.rotate([99.6 + d3.event.transform.x / (5 * scale), -36.2 - d3.event.transform.y / (5 * scale)])
         path.projection(projection)
         update()
     }
@@ -156,8 +175,8 @@ function load(data, map, coords) {
             .append("path")
                 .attr("class", "map")
                 .attr("d", path)
-                .attr("stroke-width", "0px")
-                .attr("stroke", "red")
+                .attr("stroke-width", "0.5px")
+                .attr("stroke", "#ccc")
                 .attr("fill", "#ccc")
 
         g2.selectAll("circle")
