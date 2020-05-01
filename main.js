@@ -57,13 +57,14 @@ function load(data, map, coords) {
             .attr("class", "card-body")
 
     slider.append("p")
+        .attr("class", "mb-0 mt-0")
         .style("color", "white")
         .text("Zoom")
     slider.append("input")
         .attr("class", "form-control-range")
         .attr("type", "range")
         .attr("min", 0.5)
-        .attr("max", 4)
+        .attr("max", 7)
         .attr("step", 0.1)
         .attr("value", 1)
         .on("input", function() {
