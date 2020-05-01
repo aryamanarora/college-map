@@ -102,11 +102,12 @@ function load(data, map, coords) {
 
     var g2 = svg.append("g")
         
+    var clicked = ""
     g2.selectAll("circle")
         .data(data_by_city)
         .enter()
         .append("circle")
-            .attr("id", function(d) {
+            .attr("data-name", function(d) {
                 return d[0]
             })
             .attr("cx", function(d) {
@@ -123,51 +124,84 @@ function load(data, map, coords) {
             .style("fill", "red")
             .attr('visibility', getVisibility)
             .on("mouseover", function(d) {
-                d3.select(this)
-                    .style("fill", "black")
+                if (clicked == "") {
+                    d3.select(this)
+                        .style("fill", "black")
 
-                var res = "<ul class=\"list-group list-group-flush bg-dark\">"
-                res += "<li class=\"list-group-item text-white bg-dark\"><h5 class=\"mb-0 text-white\">" + d[0] + "</h5><p class=\"text-white mt-0\">" + count[d[0]] +
-                    " senior" + (count[d[0]] == 1 ? " is" : "s are") + " going here.</p></li>"
-                for (const uni in d[1]) {
-                    res += "<li class=\"list-group-item text-white bg-dark\"><strong>" + uni + "</strong> <small>(" + d[1][uni].length + ")</small><ul>"
-                    for (const person in d[1][uni]) {
-                        var n = d[1][uni][person].split(", ")
-                        res += "<li>" + n[1] + " " + n[0] + "</li>"
+                    var res = "<ul class=\"list-group list-group-flush bg-dark\">"
+                    res += "<li class=\"list-group-item text-white bg-dark\"><h5 class=\"mb-0 text-white\">" + d[0] + "</h5><p class=\"text-white mt-0\">" + count[d[0]] +
+                        " senior" + (count[d[0]] == 1 ? " is" : "s are") + " going here.</p></li>"
+                    for (const uni in d[1]) {
+                        res += "<li class=\"list-group-item text-white bg-dark\"><strong>" + uni + "</strong> <small>(" + d[1][uni].length + ")</small><ul>"
+                        for (const person in d[1][uni]) {
+                            var n = d[1][uni][person].split(", ")
+                            res += "<li>" + n[1] + " " + n[0] + "</li>"
+                        }
+                        res += "</ul></li>"
                     }
-                    res += "</ul></li>"
-                }
-                res += "</ul>"
+                    res += "</ul>"
 
-                tooltip.transition()
-                    .duration(100)
-                    .style("opacity", 1)
-                tooltip.html(
-                    res)
-                    .style("right", 20 + "px")
-                    .style("top", 20 + "px")
+                    tooltip.transition()
+                        .duration(100)
+                        .style("opacity", 1)
+                    tooltip.html(
+                        res)
+                        .style("right", 20 + "px")
+                        .style("top", 20 + "px")
+                }
             })
             .on("mouseout", function (d) {
-                d3.select(this)
-                    .style("fill", "red")
+                if (clicked == "") {
+                    d3.select(this)
+                        .style("fill", "red")
 
-                tooltip.transition()
-                    .duration(250)
-                    .style("opacity", 0.5)
+                    tooltip.transition()
+                        .duration(250)
+                        .style("opacity", 0)
+                }
             })
+            .on("click", function (d) {
+                console.log(clicked)
+                if (clicked != d[0]) {
+                    clicked = d[0]
+                    d3.select("#clicked")
+                        .style("fill", "red")
+                        .attr("id", "")
+                    d3.select(this)
+                        .attr("id", "clicked")
+                        .style("fill", "black")
 
-    tooltip.on("mouseover", function(d) {
-            d3.select(this)
-                .transition()
-                .duration(100)
-                .style("opacity", 1)
-        })
-        .on("mouseout", function(d) {
-            d3.select(this)
-                .transition()
-                .duration(250)
-                .style("opacity", 0.5)
-        })
+                    var res = "<ul class=\"list-group list-group-flush bg-dark\">"
+                    res += "<li class=\"list-group-item text-white bg-dark\"><h5 class=\"mb-0 text-white\">" + d[0] + "</h5><p class=\"text-white mt-0\">" + count[d[0]] +
+                        " senior" + (count[d[0]] == 1 ? " is" : "s are") + " going here.</p></li>"
+                    for (const uni in d[1]) {
+                        res += "<li class=\"list-group-item text-white bg-dark\"><strong>" + uni + "</strong> <small>(" + d[1][uni].length + ")</small><ul>"
+                        for (const person in d[1][uni]) {
+                            var n = d[1][uni][person].split(", ")
+                            res += "<li>" + n[1] + " " + n[0] + "</li>"
+                        }
+                        res += "</ul></li>"
+                    }
+                    res += "</ul>"
+
+                    tooltip.transition()
+                        .duration(100)
+                        .style("opacity", 1)
+                    tooltip.html(res)
+                        .style("right", 20 + "px")
+                        .style("top", 20 + "px")
+                }
+                else {
+                    clicked = ""
+                    d3.select(this)
+                        .attr("id", "")
+                        .style("fill", "red")
+
+                    tooltip.transition()
+                        .duration(250)
+                        .style("opacity", 0)
+                }
+            })
 
     var graticule = d3.geoGraticule10();
     
@@ -199,11 +233,11 @@ function load(data, map, coords) {
 
         g2.selectAll("circle")
             .attr("cx", function(d) {
-                var id = d3.select(this).attr("id")
+                var id = d3.select(this).attr("data-name")
                 return projection([coords[id].lng, coords[id].lat])[0]
             })
             .attr("cy", function(d) {
-                var id = d3.select(this).attr("id")
+                var id = d3.select(this).attr("data-name")
                 return projection([coords[id].lng, coords[id].lat])[1]
             })
             .attr('visibility', getVisibility)
