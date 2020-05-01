@@ -51,28 +51,6 @@ function load(data, map, coords, map2, map3) {
     var path = d3.geoPath()
         .projection(projection)
 
-    var scale = 1
-    var slider = d3.select("#zoom-slider")
-        .append("div")
-            .attr("class", "card-body")
-
-    slider.append("p")
-        .attr("class", "mb-0 mt-0")
-        .style("color", "white")
-        .text("Zoom")
-    slider.append("input")
-        .attr("class", "form-control-range")
-        .attr("type", "range")
-        .attr("min", 0.5)
-        .attr("max", 7)
-        .attr("step", 0.1)
-        .attr("value", 1)
-        .on("input", function() {
-            projection.scale(500 * this.value)
-            scale = this.value
-            update(2)
-        })
-
     var v0 = 0, r0 = 0, q0 = 0
     function dragstarted() {
         v0 = versor.cartesian(projection.invert(d3.mouse(this)));
@@ -90,9 +68,6 @@ function load(data, map, coords, map2, map3) {
 
     function zoomed() {
         projection.scale(500 * d3.event.transform.k)
-        scale = d3.event.transform.k
-        d3.select(".form-control-range")
-            .attr("value", d3.event.transform.k)
         update(1)
     }
     
