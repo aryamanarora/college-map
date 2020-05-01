@@ -11,7 +11,7 @@ Promise.all([
 })
 
 function load(data, map, coords, map2, map3) {
-    var names = {}, data_by_city = {}, count = {}
+    var names = {}, data_by_city = {}, count = {}, notes = {}
     var known = 0
     data.forEach(d => {
         var city = d["Where?"]
@@ -24,6 +24,11 @@ function load(data, map, coords, map2, map3) {
             if (!(d["Destination!"] in data_by_city[city])) {
                 data_by_city[city][d["Destination!"]] = []
             }
+
+            if (d["Notes"] != "") {
+                notes[d["Class Member"]] = d["Notes"]
+            }
+
             count[city] += 1
             known += 1
             data_by_city[city][d["Destination!"]].push(d["Class Member"])
@@ -109,6 +114,24 @@ function load(data, map, coords, map2, map3) {
     }
 
     var g2 = svg.append("g")
+
+    function generate_tooltip(d) {
+        var res = "<ul class=\"list-group list-group-flush bg-dark\">"
+        res += "<li class=\"list-group-item text-white bg-dark\"><h5 class=\"mb-0 text-white\">" + d[0] + "</h5><p class=\"text-white mt-0\">" + count[d[0]] +
+            " senior" + (count[d[0]] == 1 ? " is" : "s are") + " going here.</p></li>"
+        for (const uni in d[1]) {
+            res += "<li class=\"list-group-item text-white bg-dark\"><strong>" + uni + "</strong> <small>(" + d[1][uni].length + ")</small><ul>"
+            d[1][uni].forEach(person => {
+                var n = person.split(", ")
+                res += "<li>" + n[1] + " " + n[0]
+                if (person in notes) res += " <small class=\"text-white-50\">(" + notes[person] + ")</small>"
+                res += "</li>"
+            })
+            res += "</ul></li>"
+        }
+        res += "</ul>"
+        return res
+    }
         
     var clicked = ""
     g2.selectAll("circle")
@@ -136,23 +159,10 @@ function load(data, map, coords, map2, map3) {
                     d3.select(this)
                         .style("fill", "black")
 
-                    var res = "<ul class=\"list-group list-group-flush bg-dark\">"
-                    res += "<li class=\"list-group-item text-white bg-dark\"><h5 class=\"mb-0 text-white\">" + d[0] + "</h5><p class=\"text-white mt-0\">" + count[d[0]] +
-                        " senior" + (count[d[0]] == 1 ? " is" : "s are") + " going here.</p></li>"
-                    for (const uni in d[1]) {
-                        res += "<li class=\"list-group-item text-white bg-dark\"><strong>" + uni + "</strong> <small>(" + d[1][uni].length + ")</small><ul>"
-                        for (const person in d[1][uni]) {
-                            var n = d[1][uni][person].split(", ")
-                            res += "<li>" + n[1] + " " + n[0] + "</li>"
-                        }
-                        res += "</ul></li>"
-                    }
-                    res += "</ul>"
-
                     tooltip.transition()
                         .duration(100)
                         .style("opacity", 1)
-                    tooltip.html(res)
+                    tooltip.html(generate_tooltip(d))
                 }
             })
             .on("mouseout", function (d) {
@@ -176,23 +186,10 @@ function load(data, map, coords, map2, map3) {
                         .attr("id", "clicked")
                         .style("fill", "black")
 
-                    var res = "<ul class=\"list-group list-group-flush bg-dark\">"
-                    res += "<li class=\"list-group-item text-white bg-dark\"><h5 class=\"mb-0 text-white\">" + d[0] + "</h5><p class=\"text-white mt-0\">" + count[d[0]] +
-                        " senior" + (count[d[0]] == 1 ? " is" : "s are") + " going here.</p></li>"
-                    for (const uni in d[1]) {
-                        res += "<li class=\"list-group-item text-white bg-dark\"><strong>" + uni + "</strong> <small>(" + d[1][uni].length + ")</small><ul>"
-                        for (const person in d[1][uni]) {
-                            var n = d[1][uni][person].split(", ")
-                            res += "<li>" + n[1] + " " + n[0] + "</li>"
-                        }
-                        res += "</ul></li>"
-                    }
-                    res += "</ul>"
-
                     tooltip.transition()
                         .duration(100)
                         .style("opacity", 1)
-                    tooltip.html(res)
+                    tooltip.html(generate_tooltip(d))
                 }
                 else {
                     clicked = ""
