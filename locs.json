@@ -839,5 +839,35 @@
     "countryCode": "US",
     "adminName1": "Florida",
     "lat": "30.51373"
+  },
+  "Amherst, MA": {
+    "adminCode2": "015",
+    "adminCode3": "",
+    "adminCode1": "MA",
+    "lng": "-72.52826",
+    "houseNumber": "",
+    "locality": "North Amherst",
+    "adminCode4": "",
+    "adminName2": "Hampshire",
+    "street": "Crestview",
+    "postalcode": "",
+    "countryCode": "US",
+    "adminName1": "Massachusetts",
+    "lat": "42.4038"
+  },
+  "Lexington Park, MD": {
+    "adminCode2": "037",
+    "adminCode3": "",
+    "adminCode1": "MD",
+    "lng": "-76.4543",
+    "houseNumber": "",
+    "locality": "Lexington Park",
+    "adminCode4": "",
+    "adminName2": "Saint Mary's",
+    "street": "Willows Rd",
+    "postalcode": "20653",
+    "countryCode": "US",
+    "adminName1": "Maryland",
+    "lat": "38.24789"
   }
 }

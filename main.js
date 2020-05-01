@@ -9,11 +9,11 @@ d3.csv("data.csv")
     })
 
 function load(data, map, coords) {
-    var data_by_city = {}
-    var count = {}
+    var names = {}, data_by_city = {}, count = {}
     var known = 0
     data.forEach(d => {
         var city = d["Where?"]
+        names[city.toLowerCase()] = city
         if (city != "" && city.charAt(city.length - 1) != "%") {
             if (!(city in data_by_city)) {
                 count[city] = 0
