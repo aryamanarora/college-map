@@ -44,9 +44,11 @@ function load(data, map, coords, map2, map3) {
         .rotate([99.6, -36.2])
 
     var tooltip = d3.select("body").append("div")
-        .attr("class", "card title shadow text-white bg-dark")
+        .attr("class", "card title shadow text-white bg-dark mt-3 mr-3")
         .style("opacity", 0)
         .style("width", "350px")
+        .style("right", 0 + "px")
+        .style("top", 0 + "px")
     
     var path = d3.geoPath()
         .projection(projection)
@@ -150,10 +152,7 @@ function load(data, map, coords, map2, map3) {
                     tooltip.transition()
                         .duration(100)
                         .style("opacity", 1)
-                    tooltip.html(
-                        res)
-                        .style("right", 20 + "px")
-                        .style("top", 20 + "px")
+                    tooltip.html(res)
                 }
             })
             .on("mouseout", function (d) {
@@ -194,8 +193,6 @@ function load(data, map, coords, map2, map3) {
                         .duration(100)
                         .style("opacity", 1)
                     tooltip.html(res)
-                        .style("right", 20 + "px")
-                        .style("top", 20 + "px")
                 }
                 else {
                     clicked = ""
