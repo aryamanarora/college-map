@@ -152,9 +152,22 @@ function load(data, map, coords) {
                     .style("fill", "red")
 
                 tooltip.transition()
-                    .duration(1000)
-                    .style("opacity", 0)
+                    .duration(250)
+                    .style("opacity", 0.5)
             })
+
+    tooltip.on("mouseover", function(d) {
+            d3.select(this)
+                .transition()
+                .duration(100)
+                .style("opacity", 1)
+        })
+        .on("mouseout", function(d) {
+            d3.select(this)
+                .transition()
+                .duration(250)
+                .style("opacity", 0.5)
+        })
 
     var graticule = d3.geoGraticule10();
     
