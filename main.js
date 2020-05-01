@@ -35,7 +35,6 @@ function load(data, map, coords, map2, map3) {
     var svg = d3.select("#map")
         .attr("width", width)
         .attr("height", height)
-
     
     var projection = d3.geoOrthographic()
         .scale(500)
@@ -100,6 +99,15 @@ function load(data, map, coords, map2, map3) {
         .on("zoom", zoomed)
         .on("end", function() {update(2)}))
 
+    svg = svg.append("g")
+        .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", function() {
+                console.log("end")
+                update(2)
+        }))
+
     var topo = topojson.feature(map, map.objects.countries).features
     var topo2 = topojson.feature(map2, map2.objects.countries).features
     var lakes = topojson.feature(map3, map3.objects.ne_10m_lakes).features,
@@ -110,22 +118,8 @@ function load(data, map, coords, map2, map3) {
         .attr("d", path)
         .attr("class", "sphere")
         .attr("fill", "#aadafc")
-        .call(d3.drag()
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", function() {
-                console.log("end")
-                update(2)
-            }))
     
     var g = svg.append("g")
-        .call(d3.drag()
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", function() {
-                console.log("end")
-                update(2)
-            }))
 
     data_by_city = Object.entries(data_by_city)
     function getVisibility(d) {
@@ -136,13 +130,6 @@ function load(data, map, coords, map2, map3) {
     }
 
     var g2 = svg.append("g")
-        .call(d3.drag()
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", function() {
-                console.log("end")
-                update(2)
-        }))
         
     var clicked = ""
     g2.selectAll("circle")
