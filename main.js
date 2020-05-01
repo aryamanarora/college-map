@@ -72,33 +72,41 @@ function load(data, map, coords, map2, map3) {
             update(2)
         })
 
-    var maxy = 269, miny = -631
-    function zoomed() {
-        d3.event.transform.y = Math.max(miny, Math.min(d3.event.transform.y, maxy))
-        projection.rotate(
-            [
-                99.6 + d3.event.transform.x / 5,
-                -36.2 - d3.event.transform.y / 5
-            ]
-        )
-        path.projection(projection)
+    var v0 = 0, r0 = 0, q0 = 0
+    function dragstarted() {
+        v0 = versor.cartesian(projection.invert(d3.mouse(this)));
+        r0 = projection.rotate()
+        q0 = versor(r0)
+    }
+        
+    function dragged() {
+        var v1 = versor.cartesian(projection.rotate(r0).invert(d3.mouse(this))),
+            q1 = versor.multiply(q0, versor.delta(v0, v1)),
+            r1 = versor.rotation(q1)
+        projection.rotate(r1)
         update(1)
     }
-    function unzoomed() {
-        svg.transition().duration(1000).call(
-            zoom.transform,
-            d3.zoomIdentity,
-            d3.zoomTransform(svg.node()).invert([width / 2, height / 2])
-        )
+
+    function zoomed() {
+        projection.scale(500 * d3.event.transform.k)
+        scale = d3.event.transform.k
+        d3.select(".form-control-range")
+            .attr("value", d3.event.transform.k)
+        update(1)
     }
-    var zoom = d3.zoom()
-        .extent([[0, 0], [width, height]])
-        .scaleExtent([1, 12])
-        .on("zoom", zoomed)
+
+    svg.call(d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
         .on("end", function() {
+            console.log("end")
             update(2)
-        })
-    svg.call(zoom)
+        }))
+    
+    svg.call(d3.zoom()
+        .scaleExtent([0.5, 7])
+        .on("zoom", zoomed)
+        .on("end", function() {update(2)}))
 
     var topo = topojson.feature(map, map.objects.countries).features
     var topo2 = topojson.feature(map2, map2.objects.countries).features
