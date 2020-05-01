@@ -94,14 +94,6 @@ function load(data, map, coords, map2, map3) {
             .attr("value", d3.event.transform.k)
         update(1)
     }
-
-    svg.call(d3.drag()
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", function() {
-            console.log("end")
-            update(2)
-        }))
     
     svg.call(d3.zoom()
         .scaleExtent([0.5, 7])
@@ -120,6 +112,13 @@ function load(data, map, coords, map2, map3) {
         .attr("fill", "#aadafc")
     
     var g = svg.append("g")
+        .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", function() {
+                console.log("end")
+                update(2)
+            }))
 
     data_by_city = Object.entries(data_by_city)
     function getVisibility(d) {
