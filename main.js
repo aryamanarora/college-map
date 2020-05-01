@@ -1,14 +1,14 @@
-d3.csv("https://docs.google.com/spreadsheets/d/1HdRliueGeYKPfcZcbPaB_8ky_X3azsLAvNxkSwzj-38/export?gid=0&format=csv&id=1HdRliueGeYKPfcZcbPaB_8ky_X3azsLAvNxkSwzj-38")
-    .then(function (d) {
-        d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
-            .then(function (e) {
-                d3.json("locs.json").then(function (f) {
-                    load(d, e, f)
-                })
-            })
-    })
+Promise.all([
+    d3.csv("https://docs.google.com/spreadsheets/d/1HdRliueGeYKPfcZcbPaB_8ky_X3azsLAvNxkSwzj-38/export?gid=0&format=csv&id=1HdRliueGeYKPfcZcbPaB_8ky_X3azsLAvNxkSwzj-38"),
+    d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"),
+    d3.json("locs.json"),
+    d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json"),
+    d3.json("map.json")
+]).then(function (files) {
+    load(...files)
+})
 
-function load(data, map, coords) {
+function load(data, map, coords, map2, map3) {
     var names = {}, data_by_city = {}, count = {}
     var known = 0
     data.forEach(d => {
@@ -35,7 +35,6 @@ function load(data, map, coords) {
     var svg = d3.select("#map")
         .attr("width", width)
         .attr("height", height)
-    var g = svg.append("g")
 
     
     var projection = d3.geoOrthographic()
@@ -70,13 +69,20 @@ function load(data, map, coords) {
         .on("input", function() {
             projection.scale(500 * this.value)
             scale = this.value
-            update()
+            update(2)
         })
 
+    var maxy = 269, miny = -631
     function zoomed() {
-        projection.rotate([99.6 + d3.event.transform.x / 5, -36.2 - d3.event.transform.y / 5])
+        d3.event.transform.y = Math.max(miny, Math.min(d3.event.transform.y, maxy))
+        projection.rotate(
+            [
+                99.6 + d3.event.transform.x / 5,
+                -36.2 - d3.event.transform.y / 5
+            ]
+        )
         path.projection(projection)
-        update()
+        update(1)
     }
     function unzoomed() {
         svg.transition().duration(1000).call(
@@ -89,9 +95,23 @@ function load(data, map, coords) {
         .extent([[0, 0], [width, height]])
         .scaleExtent([1, 12])
         .on("zoom", zoomed)
+        .on("end", function() {
+            update(2)
+        })
     svg.call(zoom)
 
     var topo = topojson.feature(map, map.objects.countries).features
+    var topo2 = topojson.feature(map2, map2.objects.countries).features
+    var lakes = topojson.feature(map3, map3.objects.ne_10m_lakes).features,
+        rivers = topojson.feature(map3, map3.objects.ne_10m_rivers_lake_centerlines).features
+
+    svg.append("path")
+        .datum({type: "Sphere"})
+        .attr("d", path)
+        .attr("class", "sphere")
+        .attr("fill", "#aadafc")
+    
+    var g = svg.append("g")
 
     data_by_city = Object.entries(data_by_city)
     function getVisibility(d) {
@@ -206,31 +226,54 @@ function load(data, map, coords) {
 
     var graticule = d3.geoGraticule10();
     
-    update()
+    update(2)
 
-    function update() {
+    function update(topography) {
 
         // console.log(world)
         g.selectAll("*").remove()
+        d3.select(".sphere")
+            .datum({type: "Sphere"})
+            .attr("d", path)
         var gg = g.append("path")
             .attr("class", "grid")
             .datum(graticule)
             .attr("d", function(d) {
                 return path(d)
             })
-            .attr("stroke", "grey")
+            .attr("stroke", "white")
             .attr("stroke-width", "0.5px")
             .attr("fill", "none")
 
-        g.selectAll("path")
-            .data(topo)
+        g.selectAll(".map")
+            .data(topography == 2 ? topo2 : topo)
             .enter()
             .append("path")
                 .attr("class", "map")
                 .attr("d", path)
-                .attr("stroke-width", "0.5px")
-                .attr("stroke", "#ccc")
-                .attr("fill", "#ccc")
+                .attr("stroke-width", "1px")
+                .attr("stroke", "#aeb2a4")
+                .attr("fill", "#b8d8b5")
+
+        if (topography == 2) {
+            g.selectAll(".lake")
+                .data(lakes)
+                .enter()
+                .append("path")
+                    .attr("d", path)
+                    .attr("fill", "#aadafc")
+                    .attr("stroke-width", "1px")
+                    .attr("stroke", "#aeb2a4")
+
+            // g.selectAll(".river")
+            //     .data(rivers)
+            //     .enter()
+            //     .append("path")
+            //         .attr("d", path)
+            //         .attr("stroke", "white")
+            //         .attr("stroke-width", "0.3px")
+            //         .attr("fill", "none")
+        }
 
         g2.selectAll("circle")
             .attr("cx", function(d) {
