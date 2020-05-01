@@ -1,9 +1,11 @@
+// https://docs.google.com/spreadsheets/d/1HdRliueGeYKPfcZcbPaB_8ky_X3azsLAvNxkSwzj-38/export?gid=0&format=csv&id=1HdRliueGeYKPfcZcbPaB_8ky_X3azsLAvNxkSwzj-38
+
 Promise.all([
-    d3.csv("https://docs.google.com/spreadsheets/d/1HdRliueGeYKPfcZcbPaB_8ky_X3azsLAvNxkSwzj-38/export?gid=0&format=csv&id=1HdRliueGeYKPfcZcbPaB_8ky_X3azsLAvNxkSwzj-38"),
+    d3.csv("data.csv"),
     d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"),
-    d3.json("https://raw.githubusercontent.com/aryamanarora/college-map/master/locs.json"),
+    d3.json("locs.json"),
     d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json"),
-    d3.json("https://raw.githubusercontent.com/aryamanarora/college-map/master/map.json")
+    d3.json("map.json")
 ]).then(function (files) {
     load(...files)
 })

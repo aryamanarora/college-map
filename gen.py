@@ -10,7 +10,6 @@ import time
 locations = {}
 with open('locs.json') as fin:
     locations = json.load(fin)
-    print(locations)
 
 with open('data.csv', 'r') as fin:
     csv_reader = reader(fin)
@@ -20,7 +19,7 @@ with open('data.csv', 'r') as fin:
         coordinate = requests.get(f"http://api.geonames.org/geoCodeAddressJSON?q=\
             {row[2]}&username=aryaman").json()["address"]
         locations[row[2]] = coordinate
-        print(row[2], coordinate)
+        print(f"added {row[2]}")
 
 with open('locs.json', 'w') as fout:
     fout.write(json.dumps(locations, indent=2))
