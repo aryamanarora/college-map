@@ -9,6 +9,28 @@ d3.csv("data.csv")
     })
 
 function load(data, map, coords) {
+    var data_by_city = {}
+    var count = {}
+    var known = 0
+    data.forEach(d => {
+        var city = d["Where?"]
+        if (city != "" && city.charAt(city.length - 1) != "%") {
+            if (!(city in data_by_city)) {
+                count[city] = 0
+                data_by_city[city] = {}
+            }
+            if (!(d["Destination!"] in data_by_city[city])) {
+                data_by_city[city][d["Destination!"]] = []
+            }
+            count[city] += 1
+            known += 1
+            data_by_city[city][d["Destination!"]].push(d["Class Member"])
+        }
+    })
+
+    d3.select("#count")
+        .text("We know where " + known + " seniors are headed.")
+
     var width = window.innerWidth, height = window.innerHeight;
     var svg = d3.select("#map")
         .attr("width", width)
@@ -69,23 +91,6 @@ function load(data, map, coords) {
     svg.call(zoom)
 
     var topo = topojson.feature(map, map.objects.countries).features
-    
-    var data_by_city = {}
-    var count = {}
-    data.forEach(d => {
-        var city = d["Where?"]
-        if (city != "" && city.charAt(city.length - 1) != "%") {
-            if (!(city in data_by_city)) {
-                count[city] = 0
-                data_by_city[city] = {}
-            }
-            if (!(d["Destination!"] in data_by_city[city])) {
-                data_by_city[city][d["Destination!"]] = []
-            }
-            count[city] += 1
-            data_by_city[city][d["Destination!"]].push(d["Class Member"])
-        }
-    })
 
     data_by_city = Object.entries(data_by_city)
     function getVisibility(d) {
@@ -122,7 +127,8 @@ function load(data, map, coords) {
                     .style("fill", "black")
 
                 var res = "<ul class=\"list-group list-group-flush bg-dark\">"
-                res += "<li class=\"list-group-item text-white bg-dark\"><h5 class=\"mb-0 text-white\">" + d[0] + "</h5></li>"
+                res += "<li class=\"list-group-item text-white bg-dark\"><h5 class=\"mb-0 text-white\">" + d[0] + "</h5><p class=\"text-white mt-0\">" + count[d[0]] +
+                    " senior" + (count[d[0]] == 1 ? " is" : "s are") + " going here.</p></li>"
                 for (const uni in d[1]) {
                     res += "<li class=\"list-group-item text-white bg-dark\"><strong>" + uni + "</strong> <small>(" + d[1][uni].length + ")</small><ul>"
                     for (const person in d[1][uni]) {
