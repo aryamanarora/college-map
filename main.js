@@ -110,6 +110,13 @@ function load(data, map, coords, map2, map3) {
         .attr("d", path)
         .attr("class", "sphere")
         .attr("fill", "#aadafc")
+        .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", function() {
+                console.log("end")
+                update(2)
+            }))
     
     var g = svg.append("g")
         .call(d3.drag()
@@ -129,6 +136,13 @@ function load(data, map, coords, map2, map3) {
     }
 
     var g2 = svg.append("g")
+        .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", function() {
+                console.log("end")
+                update(2)
+        }))
         
     var clicked = ""
     g2.selectAll("circle")
