@@ -29,8 +29,8 @@ function load(data, map, coords, map2, map3) {
                 notes[d["Class Member"]] = d["Notes"]
             }
 
-            count[city] += 1
-            known += 1
+            count[city]++
+            known++
             data_by_city[city][d["Destination!"]].push(d["Class Member"])
         }
     })

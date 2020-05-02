@@ -113,22 +113,23 @@ input {
 </style>
 </head>
 <body>
-  <div class="title" style="max-width: 500px">
-    <div class="row card bg-dark text-white mt-3 ml-3 shadow">
-      <div class="card-body text-white">
-        <div class="row">
-          <div class="col-2"><img src="https://www.swwhs.org/site/wp-content/themes/sww-theme/images/penguin-emblem.png" style="height: 70px;"></div>
-          <div class="col-8">
-            <h1 class="text-white">SWW Class of 2020 Destinations</h1>
-            <p class="mb-1"><span class="text-white" id="count"></span> <a href="stats.html">Click here for more class statistics.</a></p>
-            <small class="badge badge-secondary badge-pill text-white" style="transform: rotate(0);">Coded by <a class="stretched-link text-white-50" href="http://aryamanarora.github.io/">Aryaman Arora</a></small>
-            <small class="badge badge-secondary badge-pill text-white" style="transform: rotate(0);">Compiled by Ale Jorge and many others</small>
-          </div>
+    <nav class="navbar mt-3" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Stats</li>
+        </ol>
+    </nav>
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4">Statistics</h1>
+            <p class="lead">These statistics are automatically generated from the spreadsheet.</p>
         </div>
-      </div>
+        <div class="row">
+            <div class="section col" id="uni"></div>
+            <div class="section col" id="city"></div>
+            <div class="section col" id="state"></div>
+        </div>
     </div>
-  </div>
-  <svg id="map"></svg>
-  <script src="main.js"></script>
+    <script src="stats.js"></script>
 </body>
 </html>

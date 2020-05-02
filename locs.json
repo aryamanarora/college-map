@@ -869,5 +869,20 @@
     "countryCode": "US",
     "adminName1": "Maryland",
     "lat": "38.24789"
+  },
+  "Columbia, SC": {
+    "adminCode2": "079",
+    "adminCode3": "",
+    "adminCode1": "SC",
+    "lng": "-81.16575",
+    "houseNumber": "",
+    "locality": "Columbia",
+    "adminCode4": "",
+    "adminName2": "Richland",
+    "street": "Columbia Ave",
+    "postalcode": "",
+    "countryCode": "US",
+    "adminName1": "South Carolina",
+    "lat": "34.08848"
   }
 }
