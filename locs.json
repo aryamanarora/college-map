@@ -884,5 +884,20 @@
     "countryCode": "US",
     "adminName1": "South Carolina",
     "lat": "34.08848"
+  },
+  "San Francisco, CA": {
+    "adminCode2": "075",
+    "adminCode3": "",
+    "adminCode1": "CA",
+    "lng": "-122.4126",
+    "houseNumber": "",
+    "locality": "San Francisco",
+    "adminCode4": "",
+    "adminName2": "San Francisco County",
+    "street": "Francisco St",
+    "postalcode": "94133",
+    "countryCode": "US",
+    "adminName1": "California",
+    "lat": "37.80479"
   }
 }
