@@ -95,9 +95,34 @@ function load(data) {
             .html("<th scope=\"col\" style=\"width: 8%;\">#</th><th scope=\"col\" style=\"width: 77%;\">" + title + "</th><th scope=\"col\" style=\"width: 15%;\">Count</th>")
         body = body.append("tbody")
         var num = 1
-        Object.keys(count).sort(function(a,b){return count[b]-count[a]}).forEach(key => {
-            body.append("tr")
-                .html("<td scope=\"row\" style=\"width: 8%;\">" + num + "</td><td scope=\"row\" style=\"width: 77%;\">" + key_function(key) + "</td><td class=\"text-right\" style=\"width: 15%;\">" + count[key] + "</td>")
+        var last = -1, obj = null
+        Object.keys(count).sort(function(a,b) {
+            console.log(a, b, (a > b))
+            if (count[b] == count[a]) return (b > a ? -1 : 1)
+            return count[b]-count[a]
+        }).forEach(key => {
+            var row = body.append("tr")
+            if (count[key] == last) {
+                obj.attr("rowspan", function() {
+                    return parseInt(obj.attr("rowspan")) + 1
+                })
+            }
+            else {
+                obj = row.append("td")
+                    .attr("scope", "row")
+                    .attr("rowspan", 1)
+                    .style("width", "8%")
+                    .text(num)
+            }
+            row.append("td")
+                .attr("scope", "row")
+                .style("width", "77%")
+                .html(key_function(key))
+            row.append("td")
+                .attr("scope", "row")
+                .style("width", "15%")
+                .text(count[key])
+            last = count[key]
             num++
         })
     }
