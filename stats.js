@@ -104,7 +104,7 @@ function load(data) {
         .attr("class", "table table-bordered table-sm")
     city_body.append("thead")
         .append("tr")
-        .html("<th scope=\"col\" style=\"width: 85%;\">University</th><th scope=\"col\">Count</th>")
+        .html("<th scope=\"col\" style=\"width: 85%;\">City</th><th scope=\"col\">Count</th>")
     Object.keys(city_count).sort(function(a,b){return city_count[b]-city_count[a]}).forEach(key => {
         city_body.append("tr")
             .html("<td scope=\"row\">" + key + "</td><td class=\"text-right\">" + city_count[key] + "</td>")
@@ -118,7 +118,7 @@ function load(data) {
         .attr("class", "table table-bordered table-sm")
     state_body.append("thead")
         .append("tr")
-        .html("<th scope=\"col\" style=\"width: 85%;\">University</th><th scope=\"col\">Count</th>")
+        .html("<th scope=\"col\" style=\"width: 85%;\">State or Country</th><th scope=\"col\">Count</th>")
     Object.keys(state_count).sort(function(a,b){return state_count[b]-state_count[a]}).forEach(key => {
         state_body.append("tr")
             .html("<td scope=\"row\">" + (key in state_abbrevs ? state_abbrevs[key] : "<strong>" + key + "<strong>") + "</td><td class=\"text-right\">" + state_count[key] + "</td>")
