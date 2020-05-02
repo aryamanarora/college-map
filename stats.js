@@ -82,45 +82,27 @@ function load(data) {
         }
     })
 
-    var uni = d3.select("#uni")
-    uni.append("h1")
-        .text("By University")
-    var uni_body = uni.append("p")
-        .append("table")
-        .attr("class", "table table-bordered table-sm")
-    uni_body.append("thead")
-        .append("tr")
-        .html("<th scope=\"col\" style=\"width: 85%;\">University</th><th scope=\"col\">Count</th>")
-    Object.keys(uni_count).sort(function(a,b){return uni_count[b]-uni_count[a]}).forEach(key => {
-        uni_body.append("tr")
-            .html("<td scope=\"row\">" + key + "</td><td class=\"text-right\">" + uni_count[key] + "</td>")
-    })
+    function make_table(id, count, title, key_function) {
+        var t = d3.select(id)
+        t.append("h1")
+            .text("By " + title)
+        var body = t.append("p")
+            .attr("class", "table-responsive")
+            .append("table")
+            .attr("class", "table table-bordered table-sm table-fixed")
+        body.append("thead")
+            .append("tr")
+            .html("<th scope=\"col\" style=\"width: 8%;\">#</th><th scope=\"col\" style=\"width: 77%;\">" + title + "</th><th scope=\"col\" style=\"width: 15%;\">Count</th>")
+        body = body.append("tbody")
+        var num = 1
+        Object.keys(count).sort(function(a,b){return count[b]-count[a]}).forEach(key => {
+            body.append("tr")
+                .html("<td scope=\"row\" style=\"width: 8%;\">" + num + "</td><td scope=\"row\" style=\"width: 77%;\">" + key_function(key) + "</td><td class=\"text-right\" style=\"width: 15%;\">" + count[key] + "</td>")
+            num++
+        })
+    }
 
-    var city = d3.select("#city")
-    city.append("h1")
-        .text("By City")
-    var city_body = city.append("p")
-        .append("table")
-        .attr("class", "table table-bordered table-sm")
-    city_body.append("thead")
-        .append("tr")
-        .html("<th scope=\"col\" style=\"width: 85%;\">City</th><th scope=\"col\">Count</th>")
-    Object.keys(city_count).sort(function(a,b){return city_count[b]-city_count[a]}).forEach(key => {
-        city_body.append("tr")
-            .html("<td scope=\"row\">" + key + "</td><td class=\"text-right\">" + city_count[key] + "</td>")
-    })
-
-    var state = d3.select("#state")
-    state.append("h1")
-        .text("By State or Country")
-    var state_body = state.append("p")
-        .append("table")
-        .attr("class", "table table-bordered table-sm")
-    state_body.append("thead")
-        .append("tr")
-        .html("<th scope=\"col\" style=\"width: 85%;\">State or Country</th><th scope=\"col\">Count</th>")
-    Object.keys(state_count).sort(function(a,b){return state_count[b]-state_count[a]}).forEach(key => {
-        state_body.append("tr")
-            .html("<td scope=\"row\">" + (key in state_abbrevs ? state_abbrevs[key] : "<strong>" + key + "<strong>") + "</td><td class=\"text-right\">" + state_count[key] + "</td>")
-    })
+    make_table("#uni", uni_count, "University", function(d) {return d})
+    make_table("#city", city_count, "City", function(d) {return d})
+    make_table("#state", state_count, "State or Country", function(d) {return (d in state_abbrevs ? state_abbrevs[d] : "<b>" + d + "</b>")})
 }

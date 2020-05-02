@@ -899,5 +899,20 @@
     "countryCode": "US",
     "adminName1": "California",
     "lat": "37.80479"
+  },
+  "Purchase, NY": {
+    "adminCode2": "077",
+    "adminCode3": "",
+    "adminCode1": "NY",
+    "lng": "-75.08109",
+    "houseNumber": "",
+    "locality": "",
+    "adminCode4": "",
+    "adminName2": "Otsego",
+    "street": "Purchase Rd",
+    "postalcode": "13439",
+    "countryCode": "US",
+    "adminName1": "New York",
+    "lat": "42.90005"
   }
 }

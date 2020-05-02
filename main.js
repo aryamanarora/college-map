@@ -141,7 +141,7 @@ function load(data, map, coords, map2, map3) {
         return res
     }
         
-    var clicked = ""
+    var clicked = "", focused = false
     g2.selectAll("circle")
         .data(data_by_city)
         .enter()
@@ -164,50 +164,62 @@ function load(data, map, coords, map2, map3) {
             .attr('visibility', getVisibility)
             .on("mouseover", function(d) {
                 if (clicked == "") {
+                    focused = true
+                    d3.selectAll("circle")
+                        .style("opacity", 0.2)
                     d3.select(this)
                         .style("fill", "black")
+                        .style("opacity", 0.8)
 
+                    tooltip.html(generate_tooltip(d))
                     tooltip.transition()
                         .duration(100)
                         .style("opacity", 1)
-                    tooltip.html(generate_tooltip(d))
                 }
             })
             .on("mouseout", function (d) {
                 if (clicked == "") {
-                    d3.select(this)
+                    d3.selectAll("circle")
                         .style("fill", "red")
+                        .style("opacity", 0.8)
+                    focused = false
 
                     tooltip.transition()
                         .duration(250)
                         .style("opacity", 0)
+                    setTimeout(function() {
+                        if (!focused) tooltip.html("")
+                    }, 250)
                 }
             })
             .on("click", function (d) {
                 console.log(clicked)
                 if (clicked != d[0]) {
-                    clicked = d[0]
-                    d3.select("#clicked")
-                        .style("fill", "red")
-                        .attr("id", "")
+                    d3.selectAll("circle")
+                        .style("opacity", 0.2)
                     d3.select(this)
-                        .attr("id", "clicked")
                         .style("fill", "black")
-
+                        .style("opacity", 0.8)
+                    focused = true
+                    clicked = d[0]
+                    tooltip.html(generate_tooltip(d))
                     tooltip.transition()
                         .duration(100)
                         .style("opacity", 1)
-                    tooltip.html(generate_tooltip(d))
                 }
                 else {
+                    focused = false
                     clicked = ""
-                    d3.select(this)
-                        .attr("id", "")
+                    d3.selectAll("circle")
                         .style("fill", "red")
+                        .style("opacity", 0.8)
 
                     tooltip.transition()
                         .duration(250)
                         .style("opacity", 0)
+                    setTimeout(function() {
+                        if (!focused) tooltip.html("")
+                    }, 250)
                 }
             })
 
