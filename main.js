@@ -5,7 +5,7 @@ Promise.all([
     d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"),
     d3.json("locs.json"),
     d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json"),
-    d3.json("map.json")
+    d3.json("map.json"),
 ]).then(function (files) {
     load(...files)
 })
@@ -34,6 +34,14 @@ function load(data, map, coords, map2, map3) {
             data_by_city[city][d["Destination!"]].push(d["Class Member"])
         }
     })
+
+    for (city in data_by_city) {
+        var ordered = {}
+        Object.keys(data_by_city[city]).sort().forEach(function(key) {
+          ordered[key] = data_by_city[city][key]
+        })
+        data_by_city[city] = ordered
+    }
 
     d3.select("#count")
         .text("We know where " + known + " seniors are headed.")
@@ -88,7 +96,6 @@ function load(data, map, coords, map2, map3) {
             .on("start", dragstarted)
             .on("drag", dragged)
             .on("end", function() {
-                console.log("end")
                 update(2)
         }))
 
@@ -120,7 +127,8 @@ function load(data, map, coords, map2, map3) {
         res += "<li class=\"list-group-item text-white bg-dark\"><h5 class=\"mb-0 text-white\">" + d[0] + "</h5><p class=\"text-white mt-0\">" + count[d[0]] +
             " senior" + (count[d[0]] == 1 ? " is" : "s are") + " going here.</p></li>"
         for (const uni in d[1]) {
-            res += "<li class=\"list-group-item text-white bg-dark\"><strong>" + uni + "</strong> <small>(" + d[1][uni].length + ")</small><ul>"
+            res += "<li class=\"list-group-item text-white bg-dark\">"
+            res += "<strong>" + uni + "</strong> <small>(" + d[1][uni].length + ")</small><ul>"
             d[1][uni].forEach(person => {
                 var n = person.split(", ")
                 res += "<li>" + n[1] + " " + n[0]
