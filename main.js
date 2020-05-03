@@ -250,7 +250,7 @@ function load(data, map, coords, map2, map3) {
             .append("path")
                 .attr("class", "map")
                 .attr("d", path)
-                .attr("stroke-width", "1px")
+                .attr("stroke-width", "0.5px")
                 .attr("stroke", "#aeb2a4")
                 .attr("fill", "#b8d8b5")
 
@@ -261,7 +261,7 @@ function load(data, map, coords, map2, map3) {
                 .append("path")
                     .attr("d", path)
                     .attr("fill", "#aadafc")
-                    .attr("stroke-width", "1px")
+                    .attr("stroke-width", "0.5px")
                     .attr("stroke", "#aeb2a4")
 
             // g.selectAll(".river")
