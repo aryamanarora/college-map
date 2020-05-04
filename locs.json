@@ -901,18 +901,22 @@
     "lat": "37.80479"
   },
   "Purchase, NY": {
-    "adminCode2": "077",
+    "lng": "-73.714444",
+    "lat": "41.040556"
+  },
+  "Baltimore, MD": {
+    "adminCode2": "510",
     "adminCode3": "",
-    "adminCode1": "NY",
-    "lng": "-75.08109",
+    "adminCode1": "MD",
+    "lng": "-76.63897",
     "houseNumber": "",
-    "locality": "",
+    "locality": "Baltimore",
     "adminCode4": "",
-    "adminName2": "Otsego",
-    "street": "Purchase Rd",
-    "postalcode": "13439",
+    "adminName2": "Baltimore",
+    "street": "Falls Rd",
+    "postalcode": "",
     "countryCode": "US",
-    "adminName1": "New York",
-    "lat": "42.90005"
+    "adminName1": "Maryland",
+    "lat": "39.34001"
   }
 }
