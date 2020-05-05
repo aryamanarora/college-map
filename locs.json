@@ -933,5 +933,20 @@
     "countryCode": "US",
     "adminName1": "Virginia",
     "lat": "37.22579"
+  },
+  "San Diego, CA": {
+    "adminCode2": "073",
+    "adminCode3": "",
+    "adminCode1": "CA",
+    "lng": "-117.18083",
+    "houseNumber": "",
+    "locality": "San Diego",
+    "adminCode4": "",
+    "adminName2": "San Diego",
+    "street": "San Diego Ave",
+    "postalcode": "",
+    "countryCode": "US",
+    "adminName1": "California",
+    "lat": "32.74226"
   }
 }
