@@ -918,5 +918,20 @@
     "countryCode": "US",
     "adminName1": "Maryland",
     "lat": "39.34001"
+  },
+  "Blacksburg, VA": {
+    "adminCode2": "121",
+    "adminCode3": "",
+    "adminCode1": "VA",
+    "lng": "-80.41836",
+    "houseNumber": "",
+    "locality": "Blacksburg",
+    "adminCode4": "",
+    "adminName2": "Montgomery",
+    "street": "Newman",
+    "postalcode": "24060",
+    "countryCode": "US",
+    "adminName1": "Virginia",
+    "lat": "37.22579"
   }
 }
