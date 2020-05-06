@@ -60,8 +60,8 @@ function load(data, map, coords, map2, map3) {
         .attr("class", "card title shadow text-white bg-dark mt-3 mr-3")
         .style("opacity", 0)
         .style("width", "350px")
-        .style("right", 0 + "px")
-        .style("top", 0 + "px")
+        .style("right", -1000 + "px")
+        .style("top", -1000 + "px")
     
     var path = d3.geoPath()
         .projection(projection)
@@ -171,6 +171,8 @@ function load(data, map, coords, map2, map3) {
                         .style("fill", "black")
                         .style("opacity", 0.8)
 
+                    tooltip.style("right", 0 + "px")
+                        .style("top", 0 + "px")
                     tooltip.html(generate_tooltip(d))
                     tooltip.transition()
                         .duration(100)
@@ -183,12 +185,15 @@ function load(data, map, coords, map2, map3) {
                         .style("fill", "red")
                         .style("opacity", 0.8)
                     focused = false
-
+                    tooltip.style("right", 0 + "px")
+                        .style("top", 0 + "px")
                     tooltip.transition()
                         .duration(250)
                         .style("opacity", 0)
                     setTimeout(function() {
-                        if (!focused) tooltip.html("")
+                        if (!focused) tooltip
+                            .style("right", -1000 + "px")
+                            .style("top", -1000 + "px")
                     }, 250)
                 }
             })
@@ -203,6 +208,8 @@ function load(data, map, coords, map2, map3) {
                     focused = true
                     clicked = d[0]
                     tooltip.html(generate_tooltip(d))
+                    tooltip.style("right", 0 + "px")
+                        .style("top", 0 + "px")
                     tooltip.transition()
                         .duration(100)
                         .style("opacity", 1)
@@ -218,7 +225,9 @@ function load(data, map, coords, map2, map3) {
                         .duration(250)
                         .style("opacity", 0)
                     setTimeout(function() {
-                        if (!focused) tooltip.html("")
+                        if (!focused) tooltip
+                            .style("right", -1000 + "px")
+                            .style("top", -1000 + "px")
                     }, 250)
                 }
             })
