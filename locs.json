@@ -963,5 +963,35 @@
     "countryCode": "US",
     "adminName1": "California",
     "lat": "38.56196"
+  },
+  "Oswego, NY": {
+    "adminCode2": "075",
+    "adminCode3": "",
+    "adminCode1": "NY",
+    "lng": "-76.50255",
+    "houseNumber": "",
+    "locality": "Oswego",
+    "adminCode4": "",
+    "adminName2": "Oswego",
+    "street": "Oswego It",
+    "postalcode": "13126",
+    "countryCode": "US",
+    "adminName1": "New York",
+    "lat": "43.46367"
+  },
+  "Dover, DE": {
+    "adminCode2": "001",
+    "adminCode3": "",
+    "adminCode1": "DE",
+    "lng": "-75.52406",
+    "houseNumber": "",
+    "locality": "Dover",
+    "adminCode4": "",
+    "adminName2": "Kent",
+    "street": "Dover St",
+    "postalcode": "",
+    "countryCode": "US",
+    "adminName1": "Delaware",
+    "lat": "39.14868"
   }
 }
