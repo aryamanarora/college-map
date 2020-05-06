@@ -948,5 +948,20 @@
     "countryCode": "US",
     "adminName1": "California",
     "lat": "32.74226"
+  },
+  "Davis, CA": {
+    "adminCode2": "113",
+    "adminCode3": "",
+    "adminCode1": "CA",
+    "lng": "-121.77257",
+    "houseNumber": "",
+    "locality": "Davis",
+    "adminCode4": "",
+    "adminName2": "Yolo",
+    "street": "Sutter Pl",
+    "postalcode": "95616",
+    "countryCode": "US",
+    "adminName1": "California",
+    "lat": "38.56196"
   }
 }
