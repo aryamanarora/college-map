@@ -993,5 +993,35 @@
     "countryCode": "US",
     "adminName1": "Delaware",
     "lat": "39.14868"
+  },
+  "Princess Anne, MD": {
+    "adminCode2": "039",
+    "adminCode3": "",
+    "adminCode1": "MD",
+    "lng": "-75.69013",
+    "houseNumber": "",
+    "locality": "Princess Anne",
+    "adminCode4": "",
+    "adminName2": "Somerset",
+    "street": "Old Princess Anne Rd",
+    "postalcode": "21853",
+    "countryCode": "US",
+    "adminName1": "Maryland",
+    "lat": "38.19517"
+  },
+  "Salt Lake City, UT": {
+    "adminCode2": "035",
+    "adminCode3": "",
+    "adminCode1": "UT",
+    "lng": "-111.88203",
+    "houseNumber": "",
+    "locality": "Salt Lake City",
+    "adminCode4": "",
+    "adminName2": "Salt Lake",
+    "street": "City Crk",
+    "postalcode": "84103",
+    "countryCode": "US",
+    "adminName1": "Utah",
+    "lat": "40.78621"
   }
 }
