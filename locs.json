@@ -1023,5 +1023,20 @@
     "countryCode": "US",
     "adminName1": "Utah",
     "lat": "40.78621"
+  },
+  "Fort Collins, CO": {
+    "adminCode2": "069",
+    "adminCode3": "",
+    "adminCode1": "CO",
+    "lng": "-104.99209",
+    "houseNumber": "",
+    "locality": "Fort Collins",
+    "adminCode4": "",
+    "adminName2": "Larimer",
+    "street": "Carriage",
+    "postalcode": "",
+    "countryCode": "US",
+    "adminName1": "Colorado",
+    "lat": "40.57549"
   }
 }
